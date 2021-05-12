@@ -64,14 +64,6 @@ public class Player : MonoBehaviour {
         Camera.main.transform.position = pos;
     }
 
-
-    private void OnTriggerStay(Collider other) {
-        if (other.gameObject.tag == "KillPlane") {
-            isAlive = false;
-            GetComponent<SphereCollider>().enabled = false;
-        }
-    }
-
     void Retry() {
         SceneManager.LoadScene("Level1");
     }
@@ -86,15 +78,24 @@ public class Player : MonoBehaviour {
         if (other.tag == "Jump") {
             other.gameObject.SetActive(false);
             //jump, the function of the jump for 4 tiles and a height of 2.5 is h(x) = -0.625(x^2 -4x)
-            StartCoroutine(Jump(3.8f));
+            StartCoroutine(Jump(3.8f, other));
+            //boing
+            other.gameObject.transform.parent.Translate(Vector3.up * 0.5f);
+        }
+        if (other.gameObject.tag == "KillPlane") {
+            isAlive = false;
+            GetComponent<SphereCollider>().enabled = false;
         }
     }
 
-    IEnumerator Jump(float distance) {
+    IEnumerator Jump(float distance, Collider other) {
         float startHeight = transform.position.y;
-        float startPos = transform.position.z;
+        float startPos = other.transform.position.z - (other.gameObject.transform.localScale.z / 2);
         Rigidbody rb = GetComponent<Rigidbody>();
         rb.useGravity = false;
+        while(transform.position.z - startPos < 0) {
+            yield return null;
+        }
         while (transform.position.z - startPos < distance) {
 
             //h(x) = -0.625(x^2 -4x)
@@ -105,7 +106,7 @@ public class Player : MonoBehaviour {
             y *= -0.8f; //-0.625
             y += startHeight;
 
-            print("y=" + y + "  progress: " + progress);
+            //print("y=" + y + "  progress: " + progress);
 
             transform.position = new Vector3(transform.position.x, y, transform.position.z);
             yield return null; //wait one frame

@@ -110,12 +110,13 @@ GameObject:
   - component: {fileID: 7253027925546622390}
   - component: {fileID: 6908514974271298853}
   - component: {fileID: 6838162774632042577}
+  - component: {fileID: 7377280275503273555}
   m_Layer: 0
   m_Name: BouncePad
   m_TagString: Tile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &7253027925546622379
 Transform:
@@ -223,3 +224,15 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &7377280275503273555
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7253027925546622391}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b189839ccd54294a81d86fde34d0cb8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
