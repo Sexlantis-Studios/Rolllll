@@ -1,7 +1,7 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using System.Collections;
 
 public class Player : MonoBehaviour {
 
@@ -22,8 +22,6 @@ public class Player : MonoBehaviour {
     public float jumpPower;
 
     void Start() {
-
-
         retryButton.onClick.AddListener(Retry);
     }
 
@@ -88,20 +86,30 @@ public class Player : MonoBehaviour {
         if (other.tag == "Jump") {
             other.gameObject.SetActive(false);
             //jump, the function of the jump for 4 tiles and a height of 2.5 is h(x) = -0.625(x^2 -4x)
-            StartCoroutine(Jump());
+            StartCoroutine(Jump(3.8f));
         }
     }
 
-    IEnumerator Jump() {
+    IEnumerator Jump(float distance) {
         float startHeight = transform.position.y;
         float startPos = transform.position.z;
-        while (transform.position.z - startPos < 4.0f) {
-            double y = -0.625 * (Mathf.Pow(transform.position.z,2) - (-4 * transform.position.z)); //h(x) = -0.625(x^2 -4x)
-            y = Mathf.Clamp((float)y, startHeight, 3f);
-            transform.position = new Vector3(transform.position.x,(float)y,transform.position.z);
+        Rigidbody rb = GetComponent<Rigidbody>();
+        rb.useGravity = false;
+        while (transform.position.z - startPos < distance) {
+
+            //h(x) = -0.625(x^2 -4x)
+            float progress = transform.position.z - startPos;
+
+            float y = progress * progress; //x^2
+            y += -distance * progress; //-4x
+            y *= -0.8f; //-0.625
+            y += startHeight;
+
+            print("y=" + y + "  progress: " + progress);
+
+            transform.position = new Vector3(transform.position.x, y, transform.position.z);
             yield return null; //wait one frame
         }
+        rb.useGravity = true;
     }
-
-
 }
